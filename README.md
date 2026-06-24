@@ -1,4 +1,4 @@
-# Cliq Payment Gateway - Etihad Bank API
+# Cliq Payment Gateway - Etihad Jordan
 
 A WooCommerce payment gateway integrated with Bank Al Etihad's CliQ network, allowing customers to pay instantly using their CliQ Alias.
 

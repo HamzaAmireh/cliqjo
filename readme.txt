@@ -1,9 +1,9 @@
-=== Cliq Payment Gateway - Etihad Bank API ===
+=== Cliq Payment Gateway - Etihad Jordan ===
 Contributors: cliqjo
 Donate link: https://cliqpal.vercel.app
-Tags: woocommerce, cliq, payment gateway, bank al etihad
-Requires at least: 5.6
-Tested up to: 6.4
+Tags: woocommerce, cliq, payment-gateway, bank-al-etihad, jordan
+Requires at least: 6.0
+Tested up to: 7.0
 Requires PHP: 7.4
 Stable tag: 1.0.0
 License: GPLv2 or later
