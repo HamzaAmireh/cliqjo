@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Cliq Payment Gateway - Etihad Bank API
- * Plugin URI:  https://github.com/CliqJo/cliq-payment-gateway-etihad-jordan
+ * Plugin URI:  https://github.com/HamzaAmireh/cliqjo
  * Description: Enables Bank Al Etihad CliQ instant payments for WooCommerce.
  * Version:     1.0.0
  * Author:      CliqJo
