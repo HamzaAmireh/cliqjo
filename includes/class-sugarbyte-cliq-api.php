@@ -32,9 +32,11 @@ class sugarbyte_cliq_API {
 		// Only apply certs if it's our API url.
 		if ( strpos( $url, 'bankaletihad.com' ) !== false || strpos( $url, 'finto.io' ) !== false ) {
 			if ( ! empty( $this->cert_file ) && file_exists( $this->cert_file ) ) {
+				// phpcs:ignore WordPress.WP.AlternativeFunctions.curl_curl_setopt
 				curl_setopt( $handle, CURLOPT_SSLCERT, $this->cert_file );
 			}
 			if ( ! empty( $this->key_file ) && file_exists( $this->key_file ) ) {
+				// phpcs:ignore WordPress.WP.AlternativeFunctions.curl_curl_setopt
 				curl_setopt( $handle, CURLOPT_SSLKEY, $this->key_file );
 			}
 		}
@@ -64,7 +66,7 @@ class sugarbyte_cliq_API {
 		remove_action( 'http_api_curl', array( $this, 'sugarbyte_cliq_set_curl_certs_callback' ), 10 );
 
 		if ( is_wp_error( $response ) ) {
-			throw new Exception( $response->get_error_message() );
+			throw new Exception( esc_html( $response->get_error_message() ) );
 		}
 
 		$body = wp_remote_retrieve_body( $response );
@@ -106,7 +108,7 @@ class sugarbyte_cliq_API {
 		remove_action( 'http_api_curl', array( $this, 'sugarbyte_cliq_set_curl_certs_callback' ), 10 );
 
 		if ( is_wp_error( $response ) ) {
-			throw new Exception( $response->get_error_message() );
+			throw new Exception( esc_html( $response->get_error_message() ) );
 		}
 
 		$status_code = wp_remote_retrieve_response_code( $response );
@@ -114,8 +116,10 @@ class sugarbyte_cliq_API {
 		$data        = json_decode( $body, true );
 
 		if ( $status_code !== 200 ) {
-			$error_message = isset( $data['Message'] ) ? sanitize_text_field( $data['Message'] ) : sprintf( esc_html__( 'Unknown error from expected API endpoints. Status: %s', 'sugarbyte-mobile-bank-payments' ), absint( $status_code ) );
-			throw new Exception( $error_message );
+			// translators: %s: HTTP status code
+			$fallback_msg  = esc_html__( 'Unknown error from expected API endpoints. Status: %s', 'sugarbyte-mobile-bank-payments' );
+			$error_message = isset( $data['Message'] ) ? sanitize_text_field( $data['Message'] ) : sprintf( $fallback_msg, absint( $status_code ) );
+			throw new Exception( esc_html( $error_message ) );
 		}
 
 		return $data;

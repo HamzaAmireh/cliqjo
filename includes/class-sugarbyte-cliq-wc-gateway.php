@@ -216,7 +216,7 @@ class sugarbyte_cliq_WC_Gateway extends WC_Payment_Gateway {
 	 */
 	public function payment_fields() {
 		if ( $this->description ) {
-			echo wpautop( wp_kses_post( $this->description ) );
+			echo wp_kses_post( wpautop( wp_kses_post( $this->description ) ) );
 		}
 
 		echo '<fieldset id="wc-' . esc_attr( $this->id ) . '-cc-form" class="wc-credit-card-form wc-payment-form" style="background:transparent;">';
@@ -286,19 +286,20 @@ class sugarbyte_cliq_WC_Gateway extends WC_Payment_Gateway {
 				$order_id
 			);
 
-			// Payment Request successfully created.
-			$note = sprintf(
-				/* translators: %s: CliQ alias */
-				esc_html__( 'Sugarbyte Payment Gateway with CliQ Payment Request successfully sent to alias: %s. Order marked as On-Hold pending payment confirmation.', 'sugarbyte-mobile-bank-payments' ),
-				$cliq_alias
-			);
+			// translators: %s: CliQ alias
+			$note_text = esc_html__( 'Sugarbyte Payment Gateway with CliQ Payment Request successfully sent to alias: %s. Order marked as On-Hold pending payment confirmation.', 'sugarbyte-mobile-bank-payments' );
+			$note      = sprintf( $note_text, $cliq_alias );
 
 			if ( ! empty( $response['ObjectId'] ) ) {
-				$note .= "\n" . sprintf( esc_html__( 'Bank Object ID: %s', 'sugarbyte-mobile-bank-payments' ), sanitize_text_field( $response['ObjectId'] ) );
+				// translators: %s: Bank Object ID
+				$object_id_text = esc_html__( 'Bank Object ID: %s', 'sugarbyte-mobile-bank-payments' );
+				$note          .= "\n" . sprintf( $object_id_text, sanitize_text_field( $response['ObjectId'] ) );
 			}
 			
 			if ( ! empty( $response['AccountNumber'] ) ) {
-				$note .= "\n" . sprintf( esc_html__( 'Account Number: %s', 'sugarbyte-mobile-bank-payments' ), sanitize_text_field( $response['AccountNumber'] ) );
+				// translators: %s: Account Number
+				$acc_num_text = esc_html__( 'Account Number: %s', 'sugarbyte-mobile-bank-payments' );
+				$note        .= "\n" . sprintf( $acc_num_text, sanitize_text_field( $response['AccountNumber'] ) );
 			}
 
 			// Add note and mark as on-hold.
