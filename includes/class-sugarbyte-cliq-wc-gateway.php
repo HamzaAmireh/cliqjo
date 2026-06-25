@@ -1,6 +1,6 @@
 <?php
 /**
- * WooCommerce Gateway extension for Bank Al Etihad CliQ
+ * WooCommerce Gateway extension for Sugarbyte Payment Gateway with CliQ
  *
  * @package AlEtihadCliq
  */
@@ -9,17 +9,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-class AL_Etihad_Cliq_WC_Gateway extends WC_Payment_Gateway {
+class sugarbyte_cliq_WC_Gateway extends WC_Payment_Gateway {
 
 	/**
 	 * Constructor.
 	 */
 	public function __construct() {
-		$this->id                 = 'al_etihad_cliq';
+		$this->id                 = 'sugarbyte_cliq';
 		$this->icon               = ''; // URL of the icon that will be displayed on checkout page near your gateway name.
 		$this->has_fields         = true; // We need a custom field for the Alias.
-		$this->method_title       = esc_html__( 'Bank Al Etihad CliQ', 'al-etihad-cliq' );
-		$this->method_description = esc_html__( 'Allows payments via Bank Al Etihad CliQ instant payment system.', 'al-etihad-cliq' );
+		$this->method_title       = esc_html__( 'Sugarbyte Payment Gateway with CliQ', 'sugarbyte-mobile-bank-payments' );
+		$this->method_description = esc_html__( 'Allows payments via Sugarbyte Payment Gateway with CliQ instant payment system.', 'sugarbyte-mobile-bank-payments' );
 
 		// Load the settings.
 		$this->init_form_fields();
@@ -39,7 +39,7 @@ class AL_Etihad_Cliq_WC_Gateway extends WC_Payment_Gateway {
 
 		// Actions.
 		add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
-		add_action( 'admin_footer', array( $this, 'al_etihad_cliq_add_multipart_form_data' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'sugarbyte_cliq_add_multipart_form_data' ) );
 	}
 
 	/**
@@ -48,56 +48,56 @@ class AL_Etihad_Cliq_WC_Gateway extends WC_Payment_Gateway {
 	public function init_form_fields() {
 		$this->form_fields = array(
 			'enabled' => array(
-				'title'   => esc_html__( 'Enable/Disable', 'al-etihad-cliq' ),
+				'title'   => esc_html__( 'Enable/Disable', 'sugarbyte-mobile-bank-payments' ),
 				'type'    => 'checkbox',
-				'label'   => esc_html__( 'Enable Bank Al Etihad CliQ Payment', 'al-etihad-cliq' ),
+				'label'   => esc_html__( 'Enable Sugarbyte Payment Gateway with CliQ Payment', 'sugarbyte-mobile-bank-payments' ),
 				'default' => 'yes',
 			),
 			'title' => array(
-				'title'       => esc_html__( 'Title', 'al-etihad-cliq' ),
+				'title'       => esc_html__( 'Title', 'sugarbyte-mobile-bank-payments' ),
 				'type'        => 'text',
-				'description' => esc_html__( 'This controls the title which the user sees during checkout.', 'al-etihad-cliq' ),
-				'default'     => esc_html__( 'CliQ Payment', 'al-etihad-cliq' ),
+				'description' => esc_html__( 'This controls the title which the user sees during checkout.', 'sugarbyte-mobile-bank-payments' ),
+				'default'     => esc_html__( 'CliQ Payment', 'sugarbyte-mobile-bank-payments' ),
 				'desc_tip'    => true,
 			),
 			'description' => array(
-				'title'       => esc_html__( 'Description', 'al-etihad-cliq' ),
+				'title'       => esc_html__( 'Description', 'sugarbyte-mobile-bank-payments' ),
 				'type'        => 'textarea',
-				'description' => esc_html__( 'This controls the description which the user sees during checkout.', 'al-etihad-cliq' ),
-				'default'     => esc_html__( 'Pay easily using your CliQ Alias. You will receive a payment request on your mobile banking app.', 'al-etihad-cliq' ),
+				'description' => esc_html__( 'This controls the description which the user sees during checkout.', 'sugarbyte-mobile-bank-payments' ),
+				'default'     => esc_html__( 'Pay easily using your CliQ Alias. You will receive a payment request on your mobile banking app.', 'sugarbyte-mobile-bank-payments' ),
 			),
 			'api_base_url' => array(
-				'title'       => esc_html__( 'API Base URL', 'al-etihad-cliq' ),
+				'title'       => esc_html__( 'API Base URL', 'sugarbyte-mobile-bank-payments' ),
 				'type'        => 'text',
-				'description' => esc_html__( 'The base URL for the Bank Al Etihad payment API.', 'al-etihad-cliq' ),
+				'description' => esc_html__( 'The base URL for the Bank Al Etihad payment API.', 'sugarbyte-mobile-bank-payments' ),
 				'default'     => 'https://api.developer.bankaletihad.com/api/v1/partner/cliq/payment',
 				'desc_tip'    => true,
 			),
 			'token_url' => array(
-				'title'       => esc_html__( 'Token Endpoint URL', 'al-etihad-cliq' ),
+				'title'       => esc_html__( 'Token Endpoint URL', 'sugarbyte-mobile-bank-payments' ),
 				'type'        => 'text',
-				'description' => esc_html__( 'The identity provider URL to fetch the OAuth token.', 'al-etihad-cliq' ),
-				'default'     => '',
+				'description' => esc_html__( 'The identity provider URL to fetch the OAuth token.', 'sugarbyte-mobile-bank-payments' ),
+				'default'     => 'https://api.developer.bankaletihad.com:443/api/v1/tppa/token',
 				'desc_tip'    => true,
 			),
 			'client_id' => array(
-				'title'       => esc_html__( 'Client ID', 'al-etihad-cliq' ),
+				'title'       => esc_html__( 'Client ID', 'sugarbyte-mobile-bank-payments' ),
 				'type'        => 'text',
 			),
 			'client_secret' => array(
-				'title'       => esc_html__( 'Client Secret', 'al-etihad-cliq' ),
+				'title'       => esc_html__( 'Client Secret', 'sugarbyte-mobile-bank-payments' ),
 				'type'        => 'password',
 			),
 			'cert_file_upload' => array(
-				'title'       => esc_html__( 'Upload Certificate (.crt)', 'al-etihad-cliq' ),
+				'title'       => esc_html__( 'Upload Certificate (.crt)', 'sugarbyte-mobile-bank-payments' ),
 				'type'        => 'file',
-				'description' => esc_html__( 'Upload your signed TLS certificate.', 'al-etihad-cliq' ),
+				'description' => esc_html__( 'Upload your signed TLS certificate.', 'sugarbyte-mobile-bank-payments' ),
 				'default'     => '',
 			),
 			'key_file_upload' => array(
-				'title'       => esc_html__( 'Upload Key (.key)', 'al-etihad-cliq' ),
+				'title'       => esc_html__( 'Upload Key (.key)', 'sugarbyte-mobile-bank-payments' ),
 				'type'        => 'file',
-				'description' => esc_html__( 'Upload your server key file.', 'al-etihad-cliq' ),
+				'description' => esc_html__( 'Upload your server key file.', 'sugarbyte-mobile-bank-payments' ),
 				'default'     => '',
 			),
 		);
@@ -106,16 +106,10 @@ class AL_Etihad_Cliq_WC_Gateway extends WC_Payment_Gateway {
 	/**
 	 * Add enctype for file uploads to settings form.
 	 */
-	public function al_etihad_cliq_add_multipart_form_data() {
+	public function sugarbyte_cliq_add_multipart_form_data() {
 		$screen = get_current_screen();
-		if ( $screen && 'woocommerce_page_wc-settings' === $screen->id && isset( $_GET['section'] ) && 'al_etihad_cliq' === $_GET['section'] ) {
-			?>
-			<script type="text/javascript">
-				jQuery(document).ready(function($) {
-					$('#mainform').attr('enctype', 'multipart/form-data');
-				});
-			</script>
-			<?php
+		if ( $screen && 'woocommerce_page_wc-settings' === $screen->id && isset( $_GET['section'] ) && 'sugarbyte_cliq' === $_GET['section'] ) {
+			wp_add_inline_script( 'jquery', "jQuery(document).ready(function($) { jQuery('#mainform').attr('enctype', 'multipart/form-data'); });" );
 		}
 	}
 
@@ -156,7 +150,7 @@ class AL_Etihad_Cliq_WC_Gateway extends WC_Payment_Gateway {
 					<?php
 						$current_file = $this->get_option( $key );
 						if ( ! empty( $current_file ) && file_exists( $current_file ) ) {
-							echo '<p style="color: green;"><strong>' . esc_html__( 'Currently loaded:', 'al-etihad-cliq' ) . '</strong> ' . esc_html( basename( $current_file ) ) . '</p>';
+							echo '<p style="color: green;"><strong>' . esc_html__( 'Currently loaded:', 'sugarbyte-mobile-bank-payments' ) . '</strong> ' . esc_html( basename( $current_file ) ) . '</p>';
 						}
 					?>
 				</fieldset>
@@ -186,7 +180,7 @@ class AL_Etihad_Cliq_WC_Gateway extends WC_Payment_Gateway {
 				$file_content  = file_get_contents( sanitize_text_field( wp_unslash( $_FILES[ $field_key ]['tmp_name'] ) ) );
 				
 				$upload_dir = wp_upload_dir();
-				$cliq_dir   = $upload_dir['basedir'] . '/al-etihad-cliq-certs';
+				$cliq_dir   = $upload_dir['basedir'] . '/sugarbyte-cliq-certs';
 				
 				if ( ! file_exists( $cliq_dir ) ) {
 					wp_mkdir_p( $cliq_dir );
@@ -200,12 +194,12 @@ class AL_Etihad_Cliq_WC_Gateway extends WC_Payment_Gateway {
 				// Optional: Check mime type or extension to prevent arbitrary uploads
 				$file_ext = strtolower(pathinfo($uploaded_file, PATHINFO_EXTENSION));
 				if ( ($key === 'cert_file_upload' && $file_ext !== 'crt') || ($key === 'key_file_upload' && $file_ext !== 'key') ) {
-					WC_Admin_Settings::add_error( esc_html__( 'Invalid file extension uploaded.', 'al-etihad-cliq' ) );
+					WC_Admin_Settings::add_error( esc_html__( 'Invalid file extension uploaded.', 'sugarbyte-mobile-bank-payments' ) );
 					return $this->get_option( $key );
 				}
 
 				if ( file_put_contents( $file_path, $file_content ) === false ) {
-					WC_Admin_Settings::add_error( esc_html__( 'Failed to write certificate file.', 'al-etihad-cliq' ) );
+					WC_Admin_Settings::add_error( esc_html__( 'Failed to write certificate file.', 'sugarbyte-mobile-bank-payments' ) );
 					return $this->get_option( $key );
 				}
 				
@@ -227,11 +221,11 @@ class AL_Etihad_Cliq_WC_Gateway extends WC_Payment_Gateway {
 
 		echo '<fieldset id="wc-' . esc_attr( $this->id ) . '-cc-form" class="wc-credit-card-form wc-payment-form" style="background:transparent;">';
 
-		woocommerce_form_field( 'al_etihad_cliq_alias', array(
+		woocommerce_form_field( 'sugarbyte_cliq_alias', array(
 			'type'        => 'text',
-			'class'       => array( 'al-etihad-cliq-alias-field form-row-wide' ),
-			'label'       => esc_html__( 'Your CliQ Alias', 'al-etihad-cliq' ),
-			'placeholder' => esc_attr__( 'Enter your registered CliQ Alias', 'al-etihad-cliq' ),
+			'class'       => array( 'sugarbyte-cliq-alias-field form-row-wide' ),
+			'label'       => esc_html__( 'Your CliQ Alias', 'sugarbyte-mobile-bank-payments' ),
+			'placeholder' => esc_attr__( 'Enter your registered CliQ Alias', 'sugarbyte-mobile-bank-payments' ),
 			'required'    => true,
 		), '' );
 
@@ -242,8 +236,8 @@ class AL_Etihad_Cliq_WC_Gateway extends WC_Payment_Gateway {
 	 * Validate custom frontend fields
 	 */
 	public function validate_fields() {
-		if ( empty( $_POST['al_etihad_cliq_alias'] ) ) {
-			wc_add_notice( esc_html__( 'Please enter your CliQ Alias.', 'al-etihad-cliq' ), 'error' );
+		if ( empty( $_POST['sugarbyte_cliq_alias'] ) ) {
+			wc_add_notice( esc_html__( 'Please enter your CliQ Alias.', 'sugarbyte-mobile-bank-payments' ), 'error' );
 			return false;
 		}
 		return true;
@@ -258,15 +252,15 @@ class AL_Etihad_Cliq_WC_Gateway extends WC_Payment_Gateway {
 	public function process_payment( $order_id ) {
 		$order = wc_get_order( $order_id );
 
-		$cliq_alias = isset( $_POST['al_etihad_cliq_alias'] ) ? sanitize_text_field( wp_unslash( $_POST['al_etihad_cliq_alias'] ) ) : '';
+		$cliq_alias = isset( $_POST['sugarbyte_cliq_alias'] ) ? sanitize_text_field( wp_unslash( $_POST['sugarbyte_cliq_alias'] ) ) : '';
 
 		// If block checkout, fetch from temporary meta.
 		if ( empty( $cliq_alias ) ) {
-			$cliq_alias = $order->get_meta( '_al_etihad_cliq_customer_alias_tmp' );
+			$cliq_alias = $order->get_meta( '_sugarbyte_cliq_customer_alias_tmp' );
 		}
 
 		if ( empty( $cliq_alias ) ) {
-			wc_add_notice( esc_html__( 'CliQ Alias is missing.', 'al-etihad-cliq' ), 'error' );
+			wc_add_notice( esc_html__( 'CliQ Alias is missing.', 'sugarbyte-mobile-bank-payments' ), 'error' );
 			return array(
 				'result'   => 'fail',
 				'redirect' => ''
@@ -276,7 +270,7 @@ class AL_Etihad_Cliq_WC_Gateway extends WC_Payment_Gateway {
 		$cert_file = $this->cert_file;
 		$key_file  = $this->key_file;
 
-		$api = new AL_Etihad_Cliq_API(
+		$api = new sugarbyte_cliq_API(
 			$this->api_base_url,
 			$this->token_url,
 			$this->client_id,
@@ -295,25 +289,25 @@ class AL_Etihad_Cliq_WC_Gateway extends WC_Payment_Gateway {
 			// Payment Request successfully created.
 			$note = sprintf(
 				/* translators: %s: CliQ alias */
-				esc_html__( 'Bank Al Etihad CliQ Payment Request successfully sent to alias: %s. Order marked as On-Hold pending payment confirmation.', 'al-etihad-cliq' ),
+				esc_html__( 'Sugarbyte Payment Gateway with CliQ Payment Request successfully sent to alias: %s. Order marked as On-Hold pending payment confirmation.', 'sugarbyte-mobile-bank-payments' ),
 				$cliq_alias
 			);
 
 			if ( ! empty( $response['ObjectId'] ) ) {
-				$note .= "\n" . sprintf( esc_html__( 'Bank Object ID: %s', 'al-etihad-cliq' ), sanitize_text_field( $response['ObjectId'] ) );
+				$note .= "\n" . sprintf( esc_html__( 'Bank Object ID: %s', 'sugarbyte-mobile-bank-payments' ), sanitize_text_field( $response['ObjectId'] ) );
 			}
 			
 			if ( ! empty( $response['AccountNumber'] ) ) {
-				$note .= "\n" . sprintf( esc_html__( 'Account Number: %s', 'al-etihad-cliq' ), sanitize_text_field( $response['AccountNumber'] ) );
+				$note .= "\n" . sprintf( esc_html__( 'Account Number: %s', 'sugarbyte-mobile-bank-payments' ), sanitize_text_field( $response['AccountNumber'] ) );
 			}
 
 			// Add note and mark as on-hold.
 			$order->update_status( 'on-hold', $note );
 
 			// Save the alias in order meta for reference.
-			$order->update_meta_data( '_al_etihad_cliq_customer_alias', $cliq_alias );
+			$order->update_meta_data( '_sugarbyte_cliq_customer_alias', $cliq_alias );
 			if ( ! empty( $response['ObjectId'] ) ) {
-				$order->update_meta_data( '_al_etihad_cliq_object_id', sanitize_text_field( $response['ObjectId'] ) );
+				$order->update_meta_data( '_sugarbyte_cliq_object_id', sanitize_text_field( $response['ObjectId'] ) );
 			}
 			$order->save();
 
@@ -330,8 +324,8 @@ class AL_Etihad_Cliq_WC_Gateway extends WC_Payment_Gateway {
 			);
 
 		} catch ( Exception $e ) {
-			$order->add_order_note( 'Bank Al Etihad CliQ API Error: ' . esc_html( $e->getMessage() ) );
-			wc_add_notice( esc_html__( 'Payment error: ', 'al-etihad-cliq' ) . esc_html( $e->getMessage() ), 'error' );
+			$order->add_order_note( 'Sugarbyte Payment Gateway with CliQ API Error: ' . esc_html( $e->getMessage() ) );
+			wc_add_notice( esc_html__( 'Payment error: ', 'sugarbyte-mobile-bank-payments' ) . esc_html( $e->getMessage() ), 'error' );
 			return array(
 				'result'   => 'fail',
 				'redirect' => ''

@@ -1,4 +1,4 @@
-# Cliq Payment Gateway - Etihad Jordan
+# Sugarbyte Payment Gateway with CliQ for WooCommerce
 
 A WooCommerce payment gateway integrated with Bank Al Etihad's CliQ network, allowing customers to pay instantly using their CliQ Alias.
 
@@ -16,7 +16,7 @@ A WooCommerce payment gateway integrated with Bank Al Etihad's CliQ network, all
    - Target Environment URLs (Token & Base API)
    - A `.crt` signed TLS Certificate and your `.key` file.
 4. Install and activate this plugin in WordPress.
-5. Go to **WooCommerce > Settings > Payments > Bank Al Etihad CliQ**:
+5. Go to **WooCommerce > Settings > Payments > Sugarbyte Payment Gateway with CliQ**:
    - Fill in the required endpoints.
    - Upload your signed certificate `.crt` and server key `.key` files directly.
    - Activate the gateway.

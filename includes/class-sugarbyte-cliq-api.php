@@ -1,6 +1,6 @@
 <?php
 /**
- * Bank Al Etihad CliQ API Client Wrapper
+ * Sugarbyte Payment Gateway with CliQ API Client Wrapper
  *
  * @package AlEtihadCliq
  */
@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-class AL_Etihad_Cliq_API {
+class sugarbyte_cliq_API {
 	
 	private $base_url;
 	private $token_url;
@@ -28,7 +28,7 @@ class AL_Etihad_Cliq_API {
 		$this->key_file      = sanitize_text_field( $key_file );
 	}
 
-	public function al_etihad_cliq_set_curl_certs_callback( $handle, $r, $url ) {
+	public function sugarbyte_cliq_set_curl_certs_callback( $handle, $r, $url ) {
 		// Only apply certs if it's our API url.
 		if ( strpos( $url, 'bankaletihad.com' ) !== false || strpos( $url, 'finto.io' ) !== false ) {
 			if ( ! empty( $this->cert_file ) && file_exists( $this->cert_file ) ) {
@@ -59,9 +59,9 @@ class AL_Etihad_Cliq_API {
 			'sslverify' => ( false === strpos( $this->token_url, 'sandbox' ) ),
 		);
 
-		add_action( 'http_api_curl', array( $this, 'al_etihad_cliq_set_curl_certs_callback' ), 10, 3 );
+		add_action( 'http_api_curl', array( $this, 'sugarbyte_cliq_set_curl_certs_callback' ), 10, 3 );
 		$response = wp_remote_post( $this->token_url, $args );
-		remove_action( 'http_api_curl', array( $this, 'al_etihad_cliq_set_curl_certs_callback' ), 10 );
+		remove_action( 'http_api_curl', array( $this, 'sugarbyte_cliq_set_curl_certs_callback' ), 10 );
 
 		if ( is_wp_error( $response ) ) {
 			throw new Exception( $response->get_error_message() );
@@ -71,7 +71,7 @@ class AL_Etihad_Cliq_API {
 		$data = json_decode( $body, true );
 
 		if ( empty( $data['access_token'] ) ) {
-			throw new Exception( esc_html__( 'Failed to retrieve token from IDP.', 'al-etihad-cliq' ) );
+			throw new Exception( esc_html__( 'Failed to retrieve token from IDP.', 'sugarbyte-mobile-bank-payments' ) );
 		}
 
 		return sanitize_text_field( $data['access_token'] );
@@ -101,9 +101,9 @@ class AL_Etihad_Cliq_API {
 			'sslverify' => ( false === strpos( $endpoint, 'sandbox' ) ),
 		);
 
-		add_action( 'http_api_curl', array( $this, 'al_etihad_cliq_set_curl_certs_callback' ), 10, 3 );
+		add_action( 'http_api_curl', array( $this, 'sugarbyte_cliq_set_curl_certs_callback' ), 10, 3 );
 		$response = wp_remote_post( $endpoint, $args );
-		remove_action( 'http_api_curl', array( $this, 'al_etihad_cliq_set_curl_certs_callback' ), 10 );
+		remove_action( 'http_api_curl', array( $this, 'sugarbyte_cliq_set_curl_certs_callback' ), 10 );
 
 		if ( is_wp_error( $response ) ) {
 			throw new Exception( $response->get_error_message() );
@@ -114,7 +114,7 @@ class AL_Etihad_Cliq_API {
 		$data        = json_decode( $body, true );
 
 		if ( $status_code !== 200 ) {
-			$error_message = isset( $data['Message'] ) ? sanitize_text_field( $data['Message'] ) : sprintf( esc_html__( 'Unknown error from expected API endpoints. Status: %s', 'al-etihad-cliq' ), absint( $status_code ) );
+			$error_message = isset( $data['Message'] ) ? sanitize_text_field( $data['Message'] ) : sprintf( esc_html__( 'Unknown error from expected API endpoints. Status: %s', 'sugarbyte-mobile-bank-payments' ), absint( $status_code ) );
 			throw new Exception( $error_message );
 		}
 
