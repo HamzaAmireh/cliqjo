@@ -17,6 +17,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Make sure WooCommerce is active.
+// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 if (!in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_option('active_plugins')), true)) {
 	return;
 }
@@ -105,11 +106,4 @@ function sugarbyte_cliq_plugin_action_links($links)
 }
 add_filter('plugin_action_links_' . plugin_basename(__FILE__), 'sugarbyte_cliq_plugin_action_links');
 
-/**
- * Load plugin textdomain.
- */
-function sugarbyte_cliq_load_textdomain()
-{
-	load_plugin_textdomain('sugarbyte-mobile-bank-payments', false, basename(dirname(__FILE__)) . '/i18n/languages/');
-}
-add_action('plugins_loaded', 'sugarbyte_cliq_load_textdomain');
+
