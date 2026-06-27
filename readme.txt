@@ -1,7 +1,7 @@
-=== Sugarbyte Payment Gateway with CliQ for WooCommerce ===
+=== Sugarbyte CliQ Jordan - Payment Gateway for WooCommerce ===
 Contributors: sugarbyte
 Donate link: https://cliqpal.vercel.app
-Tags: woocommerce, cliq, payment-gateway, bank-al-etihad, jordan
+Tags: woocommerce, cliq, payment-gateway, jordan, cliq pay
 Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 7.4
@@ -9,7 +9,7 @@ Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Enables Sugarbyte Payment Gateway with CliQ instant payments for your WooCommerce store.
+Payment processing via the CliQ Jordan network. Developed by Sugarbyte. Built for Jordanian WooCommerce stores using only commercial bank account.
 
 == Description ==
 

@@ -1,4 +1,4 @@
-# Sugarbyte Payment Gateway with CliQ for WooCommerce
+# Sugarbyte CliQ Jordan - Payment Gateway for WooCommerce
 
 A WooCommerce payment gateway integrated with Bank Al Etihad's CliQ network, allowing customers to pay instantly using their CliQ Alias.
 

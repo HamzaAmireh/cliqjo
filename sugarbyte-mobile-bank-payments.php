@@ -1,8 +1,8 @@
 <?php
 /**
- * Plugin Name: Sugarbyte Payment Gateway with CliQ for WooCommerce
+ * Plugin Name: Sugarbyte CliQ Jordan - Payment Gateway for WooCommerce
  * Plugin URI:  https://github.com/HamzaAmireh/cliqjo
- * Description: Enables instant payments via the CliQ network for WooCommerce, supporting Bank Al Etihad integrations. Developed independently by Sugarbyte.
+ * Description: Payment processing via the CliQ Jordan network. Developed by Sugarbyte. Built for Jordanian WooCommerce stores using only commercial bank account.
  * Version:     1.0.0
  * Author:      Sugarbyte
  * Author URI:  https://cliqpal.vercel.app
